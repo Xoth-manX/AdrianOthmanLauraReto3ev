@@ -1,4 +1,4 @@
-package dao;
+package ejemplo.dao;
 
 import java.util.List;
 
