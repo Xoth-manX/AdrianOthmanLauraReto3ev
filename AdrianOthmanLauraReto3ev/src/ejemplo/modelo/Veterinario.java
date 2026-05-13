@@ -1,34 +1,25 @@
 package ejemplo.modelo;
 
-public class Veterinario {
-	protected int id_veterinario;
-	protected int id_persona;
+public class Veterinario extends Persona {
+	protected int num_veterinario;
 	protected String num_colegiado;
-	public Veterinario(int id_veterinario, int id_persona, String num_colegiado) {
-		super();
-		this.id_veterinario = id_veterinario;
-		this.id_persona = id_persona;
+	public Veterinario(String dni, String nombre, int num_veterinario, String num_colegiado) {
+		super(dni, nombre);
+		this.num_veterinario = num_veterinario;
 		this.num_colegiado = num_colegiado;
 	}
-	public Veterinario(int id_persona, String num_colegiado) {
-		super();
-		this.id_persona = id_persona;
+	public Veterinario(String dni, String nombre, String num_colegiado) {
+		super(dni, nombre);
 		this.num_colegiado = num_colegiado;
 	}
-	public Veterinario() {
-		super();
+	public Veterinario(String dni, String nombre) {
+		super(dni, nombre);
 	}
-	public int getId_veterinario() {
-		return id_veterinario;
+	public int getNum_veterinario() {
+		return num_veterinario;
 	}
-	public void setId_veterinario(int id_veterinario) {
-		this.id_veterinario = id_veterinario;
-	}
-	public int getId_persona() {
-		return id_persona;
-	}
-	public void setId_persona(int id_persona) {
-		this.id_persona = id_persona;
+	public void setNum_veterinario(int num_veterinario) {
+		this.num_veterinario = num_veterinario;
 	}
 	public String getNum_colegiado() {
 		return num_colegiado;
@@ -38,7 +29,6 @@ public class Veterinario {
 	}
 	@Override
 	public String toString() {
-		return "Veterinario [id_veterinario=" + id_veterinario + ", id_persona=" + id_persona + ", num_colegiado="
-				+ num_colegiado + "]";
+		return "Veterinario [num_veterinario=" + num_veterinario + ", num_colegiado=" + num_colegiado + "]";
 	}
 }
