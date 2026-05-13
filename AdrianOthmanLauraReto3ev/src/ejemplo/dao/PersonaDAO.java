@@ -54,15 +54,32 @@ public class PersonaDAO implements GenericDAO<Persona> {
 				}
 
 			} catch (SQLException e) {
-				System.err.println("Error SQL al obtener todos los alumnos: " + e.getMessage());
+				System.err.println("Error SQL al obtener todas las personas: " + e.getMessage());
 			}
 			return lista;
 	}
 
 	@Override
 	public Persona obtenerPorId(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		Persona p = new Persona();
+		String sql = """
+				select id_persona, dni, nombre from personas where id_persona=?
+				""";
+		try (Connection conn = ConexionBD.getConnection();
+				 PreparedStatement ps = conn.prepareStatement(sql)){
+				
+				ps.setInt(1, id);
+				
+				ResultSet rs = ps.executeQuery();
+				
+				while (rs.next()) {
+					p = mapearFila(rs);
+				}
+				
+			} catch (SQLException e) {
+				System.err.println("Error SQL al obtener ID: " + e.getMessage());
+			}
+		return p;
 	}
 	
 	public Persona mapearFila(ResultSet rs) throws SQLException {
@@ -74,16 +91,43 @@ public class PersonaDAO implements GenericDAO<Persona> {
 	}
 	
 	@Override
-	public boolean actualizar(Persona objeto) {
+	public boolean actualizar(Persona persona) {
 		String sql = """
-				dddd
+				update personas set dni=?, nombre=? where id_persona=?
 				""";
-		return false;
+		try (Connection conn = ConexionBD.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+			pstmt.setString(1, persona.getDni());
+			pstmt.setString(2, persona.getNombre());
+			pstmt.setInt(3, persona.getId_persona());
+
+			int filas = pstmt.executeUpdate();
+			return filas > 0;
+
+		} catch (SQLException e) {
+			System.err.println("Error SQL al actualizar ID " + persona.getId_persona() + ": " + e.getMessage());
+			return false;
+		}
 	}
 
 	@Override
 	public boolean eliminar(int id) {
-		// TODO Auto-generated method stub
+		String sql = """
+				delete from personas where id_persona=?
+				""";
+		try (Connection conn = ConexionBD.getConnection();
+			 PreparedStatement ps = conn.prepareStatement(sql)){
+			
+			ps.setInt(1, id);
+			
+			int filas = ps.executeUpdate();
+			if (filas>0) {
+				System.out.println("Se han eliminado " + filas + " filas");
+			}
+			
+		} catch (SQLException e) {
+			System.err.println("Error SQL al eliminar: " + e.getMessage());
+		}
 		return false;
 	}
 
