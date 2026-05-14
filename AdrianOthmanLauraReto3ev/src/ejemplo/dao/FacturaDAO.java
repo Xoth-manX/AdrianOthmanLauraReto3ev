@@ -82,33 +82,4 @@ public class FacturaDAO implements GenericDAO<Factura> {
     }
     
 	
-	public Factura  obtenerPorIdFacturaLineasFactura(int id) {
-		
-		String sql = """
-                select * from facturas f 
-                inner join lineas_factura a on a.id_factura=f.id_factura
-                WHERE id = ?
-                """;
-
-        try (Connection con = ConexionBD.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
-            ps.setInt(1, id);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return mapear(rs);
-                }
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Error al obtener préstamo por id: " + e.getMessage());
-        }
-
-        return null;
-
-		
-	}
-
-
 }
