@@ -1,6 +1,8 @@
 package ejemplo.modelo;
 
-public class Veterinario extends Persona {
+import java.io.Serializable;
+
+public class Veterinario extends Persona implements Serializable{
 	protected int id_veterinario;
 	protected String num_colegiado;
 	public Veterinario(String dni, String nombre, int id_veterinario, String num_colegiado) {
