@@ -3,6 +3,10 @@ package ejemplo.modelo;
 import java.io.Serializable;
 
 public class Veterinario extends Persona implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	protected int id_veterinario;
 	protected String num_colegiado;
 	public Veterinario(String dni, String nombre, int id_veterinario, String num_colegiado) {
