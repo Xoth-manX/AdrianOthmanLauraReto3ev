@@ -1,12 +1,37 @@
 package ejemplo.app;
 
+<<<<<<< HEAD
+import java.util.Scanner;
+
+import ejemplo.dao.FacturaDAO;
+import ejemplo.dao.LineaFacturaDAO;
+import ejemplo.dao.PersonaDAO;
+import ejemplo.modelo.Factura;
+import ejemplo.modelo.LineaFactura;
+import ejemplo.modelo.Persona;
+=======
 import ejemplo.dao.VeterinarioDAO;
 import ejemplo.modelo.Veterinario;
+>>>>>>> branch 'main' of https://github.com/Xoth-manX/AdrianOthmanLauraReto3ev.git
 
 public class Main {
-
+	public static FacturaDAO facturaDAO;
+	public static Scanner sc;
+	public static LineaFacturaDAO lineafacturaDAO;
+	public static PersonaDAO personaDAO;
+	
 	public static void main(String[] args) {
+<<<<<<< HEAD
+		sc=new Scanner(System.in);
+		lineafacturaDAO= new LineaFacturaDAO();
+		facturaDAO = new FacturaDAO();
+		personaDAO = new PersonaDAO();
+		FacturaporId4();
+		
+		
+=======
 		VeterinarioDAO veterinarioDAO = new VeterinarioDAO();
+>>>>>>> branch 'main' of https://github.com/Xoth-manX/AdrianOthmanLauraReto3ev.git
 		// 1. Muestra los tratamientos que ha realizado el veterinario id=2
 		
 		// 2. Muestra todos los clientes, selecciona un id y muestras sus mascotas.
@@ -60,5 +85,32 @@ public class Main {
 		// recalculando sus líneas, subtotal, IVA y total*/
 		
 	}
+	
+	public static void FacturaporId4() {
+		facturaDAO.obtenerTodos();
+		for (Factura a : facturaDAO.obtenerTodos()) {
+		System.out.println(a);
+		}
+		System.out.println("introduce un numero de ID de Factura");
+		String nume= sc.nextLine();
+		int  id = Integer.parseInt(nume);
+		Factura f = facturaDAO.obtenerPorId(id);
+		if (f == null) {
+			System.out.println("Factura no encontrada");
+			return;
+		}
+		else {
+			System.out.println("Factura # " + f.getId_factura()+ " fecha "+ f.getFecha());
+			System.out.println("Cliente: " + f.getId_cliente() + " | vet: " + f.getId_veterinario() + " | Mascota: " + f.getId_mascota());
+			System.out.println("Subtotal: " + f.getSubtotal() + "€ | iva: " + f.getTotal_iva() + "€ | TOTAL: " + f.getTotal() + "€");
+		}
+		for (LineaFactura lf : lineafacturaDAO.obtenerPorFactura(id)) {
+		    System.out.println(lf);
+		}
+    }
+	
 
+	
 }
+
+

@@ -114,6 +114,7 @@ public class Factura  {
 					+ ", total_iva=" + total_iva + ", total=" + total + ", toString()=" + super.toString() + "]";
 		}	
 	
+		
 			
 		
 }
