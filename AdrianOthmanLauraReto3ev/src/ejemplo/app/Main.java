@@ -1,11 +1,9 @@
 package ejemplo.app;
 
-<<<<<<< HEAD
 import java.util.Scanner;
 
 import ejemplo.dao.FacturaDAO;
 import ejemplo.dao.LineaFacturaDAO;
-import ejemplo.dao.PersonaDAO;
 import ejemplo.modelo.Factura;
 import ejemplo.modelo.LineaFactura;
 import ejemplo.modelo.Persona;
