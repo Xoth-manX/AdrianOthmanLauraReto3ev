@@ -1,9 +1,12 @@
 package ejemplo.app;
 
+import ejemplo.dao.VeterinarioDAO;
+import ejemplo.modelo.Veterinario;
+
 public class Main {
 
 	public static void main(String[] args) {
-		
+		VeterinarioDAO veterinarioDAO = new VeterinarioDAO();
 		// 1. Muestra los tratamientos que ha realizado el veterinario id=2
 		
 		// 2. Muestra todos los clientes, selecciona un id y muestras sus mascotas.
@@ -17,7 +20,7 @@ public class Main {
 		// sus mascotas y sus facturas asociadas.
 		
 		// 6. Añade un veterinario: 12345678Z Pepe Carrera, COL-1005
-		
+			veterinarioDAO.insertar("12345678Z", "Pepe Carrera", "COL-1005");
 		// 7. Añadir nueva mascota: Añade una mascota al cliente id=2,
 		// pide los datos por teclado.
 		
