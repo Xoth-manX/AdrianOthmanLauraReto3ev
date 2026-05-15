@@ -1,11 +1,9 @@
 package ejemplo.app;
 
-import ejemplo.dao.PersonaDAO;
-
 public class Main {
 
 	public static void main(String[] args) {
-		PersonaDAO personaDAO = new PersonaDAO();
+		
 		// 1. Muestra los tratamientos que ha realizado el veterinario id=2
 		
 		/*2. Muestra todos los clientes, selecciona un id y muestras sus mascotas.

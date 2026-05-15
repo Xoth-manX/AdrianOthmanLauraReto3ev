@@ -12,8 +12,8 @@ public class Cliente extends Persona {
 		super(dni, nombre);
 		this.telefono = telefono;
 	}
-	public Cliente(String dni, String nombre) {
-		super(dni, nombre);
+	public Cliente() {
+		super();
 	}
 	public int getId_cliente() {
 		return id_cliente;

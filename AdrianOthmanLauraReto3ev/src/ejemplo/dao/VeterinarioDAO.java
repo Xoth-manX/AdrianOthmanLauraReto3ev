@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import ejemplo.modelo.Persona;
 import ejemplo.modelo.Veterinario;
 import ejemplo.util.ConexionBD;
 
@@ -17,12 +16,26 @@ public class VeterinarioDAO implements GenericDAO<Veterinario> {
 	@Override
 	public boolean insertar(Veterinario veterinario) {
 		String sql = "INSERT INTO personas (dni, nombre) VALUES (?, ?)";
+		String sql2 = "INSERT INTO veterinarios(id_persona,num_colegiado) VALUES(?,?)";
 		try (Connection conn = ConexionBD.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
 					pstmt.setString(1, veterinario.getDni());
 					pstmt.setString(2, veterinario.getNombre());
-
+					
+					if (pstmt.executeUpdate()>0) {
+						ResultSet rs = pstmt.getGeneratedKeys();
+						
+						if (rs.next()) {
+							int idPersona=rs.getInt(1);
+							PreparedStatement pstmt2 = conn.prepareStatement(sql2);
+							pstmt2.setInt(1, idPersona);
+							pstmt.setString(2, veterinario.getNum_colegiado());
+							return pstmt2.executeUpdate()>0;
+						}
+					}
+					
+					
 					int filas = pstmt.executeUpdate();
 
 					if (filas > 0) {
@@ -33,37 +46,16 @@ public class VeterinarioDAO implements GenericDAO<Veterinario> {
 						}
 					}
 				} catch (SQLException e) {
-					System.err.println("Error SQL al insertar '" + veterinario.getId_persona() + "': " + e.getMessage());
-					return false;
+					System.err.println("Error SQL al insertar " + veterinario.getId_persona() + "': " + e.getMessage());
 				}
-		String sql2 = "INSERT INTO veterinarios (id_persona, num_colegiado) VALUES (?, ?)";
-		try (Connection conn = ConexionBD.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-
-					pstmt.setInt(1, veterinario.getId_persona());
-					pstmt.setString(2, veterinario.getNum_colegiado());
-
-					int filas = pstmt.executeUpdate();
-
-					if (filas > 0) {
-						try (ResultSet rs = pstmt.getGeneratedKeys()) {
-							if (rs.next()) {
-								veterinario.setId_persona(rs.getInt(1)); // asigna el ID
-							}
-						}
-					}
-
-				} catch (SQLException e) {
-					System.err.println("Error SQL al insertar '" + veterinario.getId_persona() + "': " + e.getMessage());
-					return false;
-				}
+		return false;
 	}
 
 	@Override
 	public List<Veterinario> obtenerTodos() {
 		List<Veterinario> lista = new ArrayList<Veterinario>();
 		String sql = """
-				select id_veterinario, id_persona, num_ colegiado from veterinarios order by nombre
+				select id_veterinario, id_persona, num_colegiado from veterinarios order by nombre
 				""";
 			try (Connection conn = ConexionBD.getConnection();
 					PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -92,7 +84,7 @@ public class VeterinarioDAO implements GenericDAO<Veterinario> {
 	public Veterinario obtenerPorId(int id) {
 		Veterinario v = new Veterinario();
 		String sql = """
-				select id_veterinario, id_persona, num_colegiado from veterinarios where id_veterinarios=?
+				select id_veterinario, id_persona, num_colegiado from veterinarios where id_veterinario=?
 				""";
 		try (Connection conn = ConexionBD.getConnection();
 				 PreparedStatement ps = conn.prepareStatement(sql)){
@@ -114,13 +106,13 @@ public class VeterinarioDAO implements GenericDAO<Veterinario> {
 	@Override
 	public boolean actualizar(Veterinario veterinario) {
 		String sql = """
-				update personas set id_persona=?, num_colegiado where id_veterinario=?
+				update veterinarios set id_persona=?, num_colegiado=? where id_veterinario=?
 				""";
 		try (Connection conn = ConexionBD.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
 			pstmt.setInt(1, veterinario.getId_persona());
 			pstmt.setString(2, veterinario.getNum_colegiado());
-			pstmt.setInt(1, veterinario.getId_veterinario());
+			pstmt.setInt(3, veterinario.getId_veterinario());
 
 			int filas = pstmt.executeUpdate();
 			if (filas>0) {
@@ -136,8 +128,22 @@ public class VeterinarioDAO implements GenericDAO<Veterinario> {
 
 	@Override
 	public boolean eliminar(int id) {
-		// TODO Auto-generated method stub
-		return false;
+		String sql = """
+				delete from veterinarios where id_veterinario=?
+				""";
+		
+		try (Connection conn = ConexionBD.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+			pstmt.setInt(1, id);			int filas = pstmt.executeUpdate();
+			if (filas>0) {
+				System.out.println("Se han eliminado " + filas  + " filas");
+			}
+
+		} catch (SQLException e) {
+			System.err.println("Error SQL al eliminar veterinario " + id + ": " + e.getMessage());
+			return false;
+		}
+		return true;
 	}
 
 }
