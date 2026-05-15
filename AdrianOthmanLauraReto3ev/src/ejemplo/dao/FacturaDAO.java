@@ -8,11 +8,17 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import ejemplo.modelo.Factura;
+import ejemplo.modelo.LineaFactura;
 import ejemplo.util.ConexionBD;
 
 public class FacturaDAO implements GenericDAO<Factura> {
+	public static FacturaDAO facturaDAO;
+	public static Scanner sc;
+	public static LineaFacturaDAO lineafacturaDAO;
+	public static ClienteDAO clienteDAO;
 
 	@Override
 	public boolean insertar(Factura factura) {
@@ -51,7 +57,7 @@ public class FacturaDAO implements GenericDAO<Factura> {
 		List<Factura> lista = new ArrayList<>();
 		String sql = "select id_factura, id_cliente, id_veterinario, id_mascota, fecha, subtotal, total_iva, total "
 				+ "from facturas order by fecha desc";
-		
+
 		try (Connection con = ConexionBD.getConnection();
 				PreparedStatement ps = con.prepareStatement(sql);
 				ResultSet rs = ps.executeQuery()) {
@@ -64,8 +70,6 @@ public class FacturaDAO implements GenericDAO<Factura> {
 		}
 		return lista;
 	}
-	
-		
 
 	@Override
 	public Factura obtenerPorId(int id) {
@@ -120,30 +124,26 @@ public class FacturaDAO implements GenericDAO<Factura> {
 	}
 
 	public List<Factura> obtenerFacturaporMes(int mes) {
-		List<Factura> lista= new ArrayList<Factura>();
-		
+		List<Factura> lista = new ArrayList<Factura>();
+
 		String sql = """
 				select id_factura, id_cliente, id_veterinario, id_mascota, fecha, subtotal, total_iva, total
 				from facturas where month(fecha) = ?
 				""";
-		
-	
-		try (Connection con = ConexionBD.getConnection();
-		     PreparedStatement ps = con.prepareStatement(sql)) {
 
-		    ps.setInt(1, mes);
-		    try (ResultSet rs = ps.executeQuery()) {
-		        while (rs.next()) {
-		            lista.add(mapear(rs));
-		        }
-		    }
+		try (Connection con = ConexionBD.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+
+			ps.setInt(1, mes);
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					lista.add(mapear(rs));
+				}
+			}
 		} catch (SQLException e) {
-		    System.err.println("error al obtener fatura por mes: " + e.getMessage());
+			System.err.println("error al obtener fatura por mes: " + e.getMessage());
 		}
 		return lista;
-		}
-		
-	
+	}
 
 	private Factura mapear(ResultSet rs) throws SQLException {
 		Factura p = new Factura();
@@ -159,5 +159,94 @@ public class FacturaDAO implements GenericDAO<Factura> {
 
 		return p;
 	}
+
+	// Creacion del ejercicio numero 4
+	public static void factura4() {
+		sc = new Scanner(System.in);
+		lineafacturaDAO = new LineaFacturaDAO();
+		facturaDAO = new FacturaDAO();
+		facturaDAO.obtenerTodos();
+		for (Factura a : facturaDAO.obtenerTodos()) {
+			System.out.println(a);
+		}
+		System.out.println("introduce un numero de ID de Factura");
+		String nume = sc.nextLine();
+		int id = Integer.parseInt(nume);
+		Factura f = facturaDAO.obtenerPorId(id);
+		if (f == null) {
+			System.out.println("Factura no encontrada");
+			return;
+		} else {
+			System.out.println("Factura  " + f.getId_factura() + " fecha " + f.getFecha() + "\n Cliente: ....\" "
+					+ f.getId_cliente() + "\n Mascota ID:.." + f.getId_mascota());
+		}
+		System.out.println("LINEAS POR FACTURA");
+		for (LineaFactura lf : lineafacturaDAO.obtenerPorFactura(id)) {
+			System.out.println(lf);
+		}
+	}
+
+	// Factura por numero de mes ejercicio10
+	// BUSCAR FACTURA NUMERO DEL MES
+	public static void FacturaporMes10() {
+		sc = new Scanner(System.in);
+		lineafacturaDAO = new LineaFacturaDAO();
+		facturaDAO = new FacturaDAO();
+		System.out.println("introduce una Factura por mes ");
+		String nume = sc.nextLine();
+		int mes = Integer.parseInt(nume);
+		List<Factura> facturas = facturaDAO.obtenerFacturaporMes(mes);
+		double totalfacturado = 0;
+		totalfacturado = 0;
+		for (Factura f : facturas) {
+			System.out.println(f.getId_factura() + " - " + f.getFecha() + " - " + f.getTotal());
+			totalfacturado += f.getTotal();
+		}
+		System.out.println("Total: " + totalfacturado);
+	}
 	
+	//ejercicio 16
+	public static void Duplicafactura16() {
+		sc = new Scanner(System.in);
+		lineafacturaDAO = new LineaFacturaDAO();
+		facturaDAO = new FacturaDAO();
+		System.out.println("ingrese un numero de factura a Duplicar ");
+		String facturaduplicar = sc.nextLine();
+		int duplicar = Integer.parseInt(facturaduplicar);
+		Factura factori = facturaDAO.obtenerPorId(duplicar);
+		if (factori == null) {
+			System.out.println("factura no encontrada");
+			return;
+		}
+		Factura nueva = new Factura();
+		nueva.setId_cliente(factori.getId_cliente());
+		nueva.setId_veterinario(factori.getId_veterinario());
+		nueva.setId_mascota(factori.getId_mascota());
+		nueva.setFecha(LocalDate.now());
+		nueva.setSubtotal(factori.getSubtotal());
+		nueva.setTotal_iva(factori.getTotal_iva());
+		nueva.setTotal(factori.getTotal());
+
+		if (facturaDAO.insertar(nueva)) {
+			List<LineaFactura> lineasOrig = lineafacturaDAO.obtenerPorFactura(duplicar);
+			for (LineaFactura lf : lineasOrig) {
+				LineaFactura copia = new LineaFactura();
+				copia.setId_factura(nueva.getId_factura());
+				copia.setId_tratamiento(lf.getId_tratamiento());
+				copia.setFecha(LocalDate.now());
+				copia.setCantidad(lf.getCantidad());
+				copia.setPrecio_tratamiento(lf.getPrecio_tratamiento());
+				copia.setImporte(lf.getImporte());
+				lineafacturaDAO.insertar(copia);
+			}
+			System.out.println("Factura duplicada: " + nueva.getId_factura());
+			facturaDAO.obtenerTodos();
+			for (Factura a : facturaDAO.obtenerTodos()) {
+				System.out.println(a);
+			}
+		
+		}
+
+	}
+
 }

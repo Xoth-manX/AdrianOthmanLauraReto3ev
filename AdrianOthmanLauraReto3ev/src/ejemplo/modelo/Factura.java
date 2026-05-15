@@ -111,9 +111,10 @@ public class Factura  {
 		public String toString() {
 			return "Factura [id_factura=" + id_factura + ", id_cliente=" + id_cliente + ", id_veterinario="
 					+ id_veterinario + ", id_mascota=" + id_mascota + ", fecha=" + fecha + ", subtotal=" + subtotal
-					+ ", total_iva=" + total_iva + ", total=" + total + ", toString()=" + super.toString() + "]";
-		}	
-	
+					+ ", total_iva=" + total_iva + ", total=" + total + "]";
+		}
+
+
 		
 			
 		
