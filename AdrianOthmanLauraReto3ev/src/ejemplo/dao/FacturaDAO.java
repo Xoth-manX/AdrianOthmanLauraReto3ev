@@ -244,6 +244,7 @@ public class FacturaDAO implements GenericDAO<Factura> {
 			for (Factura a : facturaDAO.obtenerTodos()) {
 				System.out.println(a);
 				//comentario
+				//comentario
 				System.out.println(a);
 			}
 		
