@@ -68,7 +68,9 @@ public class LineaFacturaDAO implements GenericDAO<LineaFactura> {
 
 	@Override
 	public boolean actualizar(LineaFactura linearfactura) {
-		String sql = "UPDATE lineas_factura SET id_factura=?, id_tratamiento=?, fecha=?, cantidad=?, precio_tratamiento=?, importe=? WHERE id_linea_factura=?";
+		String sql = """
+				update lineas_factura id_factura=?, id_tratamiento=?, fecha=?, cantidad=?, precio_tratamiento=?, importe=? WHERE id_linea_factura=?
+				""";
 		try (Connection con = ConexionBD.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
 			ps.setInt(1, linearfactura.getId_factura());
