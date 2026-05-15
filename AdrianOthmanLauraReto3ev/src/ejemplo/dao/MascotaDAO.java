@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,10 +17,32 @@ import ejemplo.util.ConexionBD;
 public class MascotaDAO implements GenericDAO<Mascota>{
 
 	@Override
-	public boolean insertar(Mascota objeto) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	public boolean insertar(Mascota mascota) {
+		
+
+	    String sql = "insert into mascotas(id_cliente,nombre,especie,fecha_nacimiento,peso)values(?,?,?,?,?);";
+	    try (Connection con = ConexionBD.getConnection();
+	         PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+	          ps.setInt(1, mascota.getId_cliente());
+	          ps.setString(2, mascota.getNombre());
+	          ps.setString(3, mascota.getEspecie());
+	          ps.setObject(4, mascota.getFechaNacimiento());
+	          ps.setDouble(5, mascota.getPeso());
+	          int filas = ps.executeUpdate();
+	          if (filas > 0) {
+	                ResultSet rs = ps.getGeneratedKeys();
+	                if (rs.next()) {
+	                    mascota.setId_cliente(1);
+	                }
+	                return true;
+	            }
+	      } catch (SQLException e) {
+	            System.out.println("Error al insertar: " + e.getMessage());
+	      }
+	        return false;
+	    }
+
+	
 
 	@Override
 	public List<Mascota> obtenerTodos() {
@@ -32,8 +56,7 @@ public class MascotaDAO implements GenericDAO<Mascota>{
 	           ResultSet rs = ps.executeQuery();
 	           while (rs.next()) {
 	             
-          lista.add(new Mascota(rs.getInt("id_cliente"), rs.getString("nombre"),rs.getString("especie"),
-        		  (localdate)rs.getObject("fechaNacimiento"),rs.getDouble("peso"))); 
+					lista.add(mapearFila(rs)); 
 	               
 	           }
 	       } catch (SQLException e) {
@@ -41,7 +64,15 @@ public class MascotaDAO implements GenericDAO<Mascota>{
 	       }
 	       return lista;
 	   }
-
+    private Mascota mapearFila(ResultSet rs) throws SQLException {
+    	 Mascota a = new  Mascota();
+	  a.setId_cliente(rs.getInt("id_cliente"));
+	  a.setNombre( rs.getString("nombre"));
+	  a.setEspecie( rs.getString("especie"));
+	  a.setFechaNacimiento( rs.getObject("fechaNacimineto",LocalDate.class));
+	  a.setPeso( rs.getDouble("peso"));
+	  return a;
+    }
 	@Override
 	public Mascota obtenerPorId(int id) {
 	
@@ -50,10 +81,19 @@ public class MascotaDAO implements GenericDAO<Mascota>{
 		   }
 
 	@Override
-	public boolean actualizar(Mascota objeto) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	public boolean actualizar(Mascota mascota) {
+		   String sql = "Update mascota set pes=?";
+		   try (Connection con = ConexionBD.getConnection();
+		        PreparedStatement ps = con.prepareStatement(sql)) {
+		          ps.setDoubleo(1, ma);
+		            // ejecutar
+		    
+		    } catch (SQLException e) {
+		            System.out.println("Error: " + e.getMessage());
+		    }
+
+		
+		    return ps.executeUpdate() > 0;
 
 	@Override
 	public boolean eliminar(int id) {
