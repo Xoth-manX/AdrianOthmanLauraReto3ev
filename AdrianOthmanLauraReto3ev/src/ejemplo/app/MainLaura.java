@@ -9,7 +9,7 @@ import ejemplo.modelo.Factura;
 import ejemplo.modelo.LineaFactura;
 import ejemplo.modelo.Persona;
 
-public class Main {
+public class MainLaura {
 	public static FacturaDAO facturaDAO;
 	public static Scanner sc;
 	public static LineaFacturaDAO lineafacturaDAO;
@@ -76,8 +76,3 @@ public class Main {
 		}
     }
 	
-
-	
-}
-
-

@@ -49,7 +49,9 @@ public class FacturaDAO implements GenericDAO<Factura> {
 	@Override
 	public List<Factura> obtenerTodos() {
 		List<Factura> lista = new ArrayList<>();
-		String sql = "select id_factura, id_cliente, id_veterinario, id_mascota, fecha, subtotal, total_iva, total from facturas order by fecha desc";
+		String sql = "select id_factura, id_cliente, id_veterinario, id_mascota, fecha, subtotal, total_iva, total "
+				+ "from facturas order by fecha desc";
+		
 		try (Connection con = ConexionBD.getConnection();
 				PreparedStatement ps = con.prepareStatement(sql);
 				ResultSet rs = ps.executeQuery()) {
@@ -62,6 +64,8 @@ public class FacturaDAO implements GenericDAO<Factura> {
 		}
 		return lista;
 	}
+	
+		
 
 	@Override
 	public Factura obtenerPorId(int id) {
@@ -82,18 +86,18 @@ public class FacturaDAO implements GenericDAO<Factura> {
 	}
 
 	@Override
-	public boolean actualizar(Factura objeto) {
+	public boolean actualizar(Factura factura) {
 		String sql = "update facturas set id_cliente=?, id_veterinario=?, id_mascota=?, fecha=?, subtotal=?, total_iva=?, total=? WHERE id_factura=?";
 		try (Connection con = ConexionBD.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
-			ps.setInt(1, objeto.getId_cliente());
-			ps.setInt(2, objeto.getId_veterinario());
-			ps.setInt(3, objeto.getId_mascota());
-			ps.setObject(4, objeto.getFecha());
-			ps.setDouble(5, objeto.getSubtotal());
-			ps.setDouble(6, objeto.getTotal_iva());
-			ps.setDouble(7, objeto.getTotal());
-			ps.setInt(8, objeto.getId_factura());
+			ps.setInt(1, factura.getId_cliente());
+			ps.setInt(2, factura.getId_veterinario());
+			ps.setInt(3, factura.getId_mascota());
+			ps.setObject(4, factura.getFecha());
+			ps.setDouble(5, factura.getSubtotal());
+			ps.setDouble(6, factura.getTotal_iva());
+			ps.setDouble(7, factura.getTotal());
+			ps.setInt(8, factura.getId_factura());
 
 			return ps.executeUpdate() > 0;
 		} catch (SQLException e) {
@@ -145,7 +149,7 @@ public class FacturaDAO implements GenericDAO<Factura> {
 		Factura p = new Factura();
 
 		p.setId_factura(rs.getInt("id_factura"));
-		p.setId_cliente(rs.getInt("id_cliente "));
+		p.setId_cliente(rs.getInt("id_cliente"));
 		p.setId_veterinario(rs.getInt("id_veterinario"));
 		p.setId_mascota(rs.getInt("id_mascota"));
 		p.setFecha(rs.getObject("fecha", LocalDate.class));
@@ -155,5 +159,5 @@ public class FacturaDAO implements GenericDAO<Factura> {
 
 		return p;
 	}
-
+	
 }

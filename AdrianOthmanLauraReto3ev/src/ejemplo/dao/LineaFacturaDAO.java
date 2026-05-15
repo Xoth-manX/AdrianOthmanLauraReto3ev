@@ -111,7 +111,7 @@ public class LineaFacturaDAO implements GenericDAO<LineaFactura> {
 		p.setId_tratamiento(rs.getInt("id_tratamiento"));
 		p.setFecha(rs.getObject("fecha", LocalDate.class));
 		p.setCantidad(rs.getInt("cantidad"));
-		p.setPrecio_tratamiento(rs.getDouble("precio_tratamiento decimal"));
+		p.setPrecio_tratamiento(rs.getDouble("precio_tratamiento"));
 		p.setImporte(rs.getDouble("importe"));
 
 		return p;
