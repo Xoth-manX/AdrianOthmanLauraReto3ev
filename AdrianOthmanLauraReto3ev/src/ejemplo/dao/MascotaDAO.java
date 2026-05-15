@@ -82,23 +82,66 @@ public class MascotaDAO implements GenericDAO<Mascota>{
 
 	@Override
 	public boolean actualizar(Mascota mascota) {
-		   String sql = "Update mascota set pes=?";
+		   String sql = "Update mascotas set nombre=?,set especie=?,set fechaNacimiento, set peso=? where id_cliente=?";
 		   try (Connection con = ConexionBD.getConnection();
 		        PreparedStatement ps = con.prepareStatement(sql)) {
-		          ps.setDoubleo(1, ma);
-		            // ejecutar
+			  
+		          ps.setString(1, mascota.getNombre());
+		          ps.setString(2, mascota.getEspecie());
+		          ps.setObject(3, mascota.getFechaNacimiento());
+		          ps.setDouble(4, mascota.getPeso());
+		          ps.setInt(5, mascota.getId_cliente());
+		          
+		          
+		          return ps.executeUpdate() > 0;
 		    
 		    } catch (SQLException e) {
 		            System.out.println("Error: " + e.getMessage());
+		            
 		    }
 
-		
-		    return ps.executeUpdate() > 0;
+		return false;
+		}
+		   
+		    
 
 	@Override
 	public boolean eliminar(int id) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+		String sql = """
 
+				delete m from mascotas m
+				left join facturas f on m.id_mascota = f.id_mascota
+				where m.id_mascota = ? and f.id_factura is null
+
+				""";
+
+
+
+		try (Connection conn = ConexionBD.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+			pstmt.setInt(1, id);
+
+			int filas = pstmt.executeUpdate();
+
+			if (filas > 0) {
+
+				System.out.println("Se han eliminado " + filas + " filas");
+
+			}
+
+
+
+		} catch (SQLException e) {
+
+			System.err.println("Error SQL al eliminar cliente " + id + ": " + e.getMessage());
+
+			return false;
+
+		}
+
+		return true;
+
+	}
 }
+
+
