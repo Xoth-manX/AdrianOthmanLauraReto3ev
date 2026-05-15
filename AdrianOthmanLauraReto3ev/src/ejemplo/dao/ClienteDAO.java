@@ -34,16 +34,6 @@ public class ClienteDAO implements GenericDAO<Cliente> {
 					return pstmt2.executeUpdate() > 0;
 				}
 			}
-
-			int filas = pstmt.executeUpdate();
-
-			if (filas > 0) {
-				try (ResultSet rs = pstmt.getGeneratedKeys()) {
-					if (rs.next()) {
-						cliente.setId_persona(rs.getInt(1)); // asigna el ID
-					}
-				}
-			}
 		} catch (SQLException e) {
 			System.err.println("Error SQL al insertar " + cliente.getId_persona() + "': " + e.getMessage());
 		}
