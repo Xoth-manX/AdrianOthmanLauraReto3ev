@@ -11,7 +11,9 @@ import java.util.List;
 import java.util.Scanner;
 
 import ejemplo.modelo.Factura;
+import ejemplo.modelo.Historial;
 import ejemplo.modelo.LineaFactura;
+import ejemplo.modelo.Mascota;
 import ejemplo.util.ConexionBD;
 
 public class FacturaDAO implements GenericDAO<Factura> {
@@ -19,7 +21,8 @@ public class FacturaDAO implements GenericDAO<Factura> {
 	public static Scanner sc;
 	public static LineaFacturaDAO lineafacturaDAO;
 	public static ClienteDAO clienteDAO;
-
+	public static MascotaDAO mascotaDAO;
+	public static HistorialDAO historialDAO;
 	@Override
 	public boolean insertar(Factura factura) {
 
@@ -123,6 +126,10 @@ public class FacturaDAO implements GenericDAO<Factura> {
 		}
 	}
 
+	/**
+	 * @param mes se ingrese el mes en formato numero ejemplo 4
+	 * @return
+	 */
 	public List<Factura> obtenerFacturaporMes(int mes) {
 		List<Factura> lista = new ArrayList<Factura>();
 
@@ -161,15 +168,20 @@ public class FacturaDAO implements GenericDAO<Factura> {
 	}
 
 	// Creacion del ejercicio numero 4
+	/**
+	 * Muestra todas las facturas generadas y se introduce un id factura y muestra
+	 * el detalle de la factura por linea de factura
+	 */
 	public static void factura4() {
 		sc = new Scanner(System.in);
 		lineafacturaDAO = new LineaFacturaDAO();
 		facturaDAO = new FacturaDAO();
 		facturaDAO.obtenerTodos();
+		System.out.println("SE MUESTRAN TODAS LAS FACTURAS A LA FECHA \n" + ".".repeat(50));
 		for (Factura a : facturaDAO.obtenerTodos()) {
 			System.out.println(a);
 		}
-		System.out.println("introduce un numero de ID de Factura");
+		System.out.println("\nINTRODUCE UN NUMERO DE ID DE FACTURA");
 		String nume = sc.nextLine();
 		int id = Integer.parseInt(nume);
 		Factura f = facturaDAO.obtenerPorId(id);
@@ -188,11 +200,15 @@ public class FacturaDAO implements GenericDAO<Factura> {
 
 	// Factura por numero de mes ejercicio10
 	// BUSCAR FACTURA NUMERO DEL MES
+	/**
+	 * Se ingrese un numero de factura por el mes y te buscar que factura existe en
+	 * ese mes
+	 */
 	public static void FacturaporMes10() {
 		sc = new Scanner(System.in);
 		lineafacturaDAO = new LineaFacturaDAO();
 		facturaDAO = new FacturaDAO();
-		System.out.println("introduce una Factura por mes ");
+		System.out.println("\nINGRESE UN NUMERO DE FACTURA SE BUSCARA POR MES \n" + ".".repeat(50));
 		String nume = sc.nextLine();
 		int mes = Integer.parseInt(nume);
 		List<Factura> facturas = facturaDAO.obtenerFacturaporMes(mes);
@@ -203,14 +219,22 @@ public class FacturaDAO implements GenericDAO<Factura> {
 			totalfacturado += f.getTotal();
 		}
 		System.out.println("Total: " + totalfacturado);
+		if (totalfacturado == 0) {
+			System.out.println("FACTURA NO EXISTE por mes");
+
+		}
 	}
-	
-	//ejercicio 16
+
+	// ejercicio 16
+	/**
+	 * Duplicafactura16() duplica la factura ingrese el id de la factura y se
+	 * duplicara con su linea de factura la fecha se colocara la fecha actual
+	 */
 	public static void Duplicafactura16() {
 		sc = new Scanner(System.in);
 		lineafacturaDAO = new LineaFacturaDAO();
 		facturaDAO = new FacturaDAO();
-		System.out.println("ingrese un numero de factura a Duplicar ");
+		System.out.println("\nIngrese un numero de factura a Duplicar \n" + ".".repeat(50));
 		String facturaduplicar = sc.nextLine();
 		int duplicar = Integer.parseInt(facturaduplicar);
 		Factura factori = facturaDAO.obtenerPorId(duplicar);
@@ -243,13 +267,26 @@ public class FacturaDAO implements GenericDAO<Factura> {
 			facturaDAO.obtenerTodos();
 			for (Factura a : facturaDAO.obtenerTodos()) {
 				System.out.println(a);
-				//comentario
-				//comentario
-				System.out.println(a);
 			}
-		
+
 		}
-
 	}
-
+	
+	// 17. Elimina * un tratamiento del historial y rehaz una factura. Selecciona
+	// una mascota,
+	// muestra su historial de una fecha concreta, elimina uno de los tratamientos
+	// de ese día y actualiza la factura asociada recalculando sus líneas, subtotal,
+	// IVA y total
+	public static void eliminaFactHist() {
+		System.out.println("Ingrede ID mascota");
+		sc = new Scanner(System.in);
+		String nume = sc.nextLine();
+		int id = Integer.parseInt(nume);
+		Mascota m = mascotaDAO.obtenerPorId(id);
+		System.out.println("Ingrede fecha");	
+		String fec = sc.nextLine();
+		LocalDate fecha=LocalDate.parse(fec);
+		
+	}
+	
 }

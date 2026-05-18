@@ -17,6 +17,15 @@ public class Factura  {
 			super();
 		}
 
+		/**
+		 * @param id_cliente id del cliente ingresado
+		 * @param id_veterinario  id del veterinario
+		 * @param id_mascota id id de la mascota
+		 * @param fecha la fecha
+		 * @param subtotal es es subtotal sin IVA
+		 * @param total_iva el iva es 21%
+		 * @param total subtotal + el iva
+		 */
 		public Factura(int id_cliente, int id_veterinario, int id_mascota, LocalDate fecha, double subtotal,
 				double total_iva, double total) {
 			super();
