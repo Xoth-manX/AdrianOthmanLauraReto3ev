@@ -54,7 +54,7 @@ public class VeterinarioDAO implements GenericDAO<Veterinario> {
 	public List<Veterinario> obtenerTodos() {
 		List<Veterinario> lista = new ArrayList<Veterinario>();
 		String sql = """
-				select id_veterinario, id_persona, num_colegiado from veterinarios order by nombre
+				select id_veterinario, id_persona, num_colegiado from veterinarios
 				""";
 		try (Connection conn = ConexionBD.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql);

@@ -181,7 +181,7 @@ public class FacturaDAO implements GenericDAO<Factura> {
 		for (Factura a : facturaDAO.obtenerTodos()) {
 			System.out.println(a);
 		}
-		System.out.println("\nINTRODUCE UN NUMERO DE ID DE FACTURA");
+		System.out.println("\nINTRODUCE UN NUMERO DE ID DE FACTURA: ");
 		String nume = sc.nextLine();
 		int id = Integer.parseInt(nume);
 		Factura f = facturaDAO.obtenerPorId(id);
