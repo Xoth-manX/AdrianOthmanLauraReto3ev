@@ -17,7 +17,7 @@ public class Main {
 		// historial completo de esa mascota.
 		
 		//4. Muestra una factura por id junto con todas sus líneas de factura.
-			facturaDAO.fa;
+			
 		// 5. Muestra todos los clientes y selecciona uno por id y muestra sus datos,
 		// sus mascotas y sus facturas asociadas.
 		
