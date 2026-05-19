@@ -292,7 +292,10 @@ facturaDAO.factura4();
 
 	// Lee ese fichero en una lista y muestra los datos de los veterinarios.
 
-	
+	serial.guardar(veterinarioDAO.obtenerTodos());
+	for (Veterinario veterinario : serial.leer()) {
+		System.out.println(veterinario);
+	}
 
 	// 15. Genera un resumen mensual por veterinario: pide un número de mes
 
