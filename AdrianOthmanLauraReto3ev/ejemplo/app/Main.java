@@ -1,6 +1,5 @@
 package ejemplo.app;
 
-<<<<<<< HEAD
 
 
 import java.time.LocalDate;
@@ -8,44 +7,30 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import ejemplo.dao.FacturaDAO;
 import ejemplo.dao.HistorialDAO;
 import ejemplo.dao.MascotaDAO;
 import ejemplo.dao.TratamientoDAO;
-=======
-import ejemplo.dao.FacturaDAO;
->>>>>>> branch 'main' of https://github.com/Xoth-manX/AdrianOthmanLauraReto3ev.git
 import ejemplo.dao.VeterinarioDAO;
 import ejemplo.modelo.Historial;
 import ejemplo.modelo.Mascota;
 import ejemplo.modelo.Tratamiento;
 import ejemplo.modelo.Veterinario;
-<<<<<<< HEAD
 
 
-=======
->>>>>>> branch 'main' of https://github.com/Xoth-manX/AdrianOthmanLauraReto3ev.git
 
 public class Main {
 
-<<<<<<< HEAD
 
 
-=======
->>>>>>> branch 'main' of https://github.com/Xoth-manX/AdrianOthmanLauraReto3ev.git
 	public static void main(String[] args) {
-<<<<<<< HEAD
 
 		
 
-=======
-		VeterinarioDAO veterinarioDAO = new VeterinarioDAO();
-		FacturaDAO facturaDAO = new FacturaDAO();
->>>>>>> branch 'main' of https://github.com/Xoth-manX/AdrianOthmanLauraReto3ev.git
 		// 1. Muestra los tratamientos que ha realizado el veterinario id=2
-<<<<<<< HEAD
 
         Scanner sc = new Scanner(System.in);
-
+        FacturaDAO facturaDAO = new FacturaDAO();
         MascotaDAO mascotaDAO = new MascotaDAO();
         HistorialDAO historialDAO = new HistorialDAO();
         TratamientoDAO tratamientoDAO = new TratamientoDAO();
@@ -103,12 +88,11 @@ public class Main {
                     + "  Precio: " + t.getPrecio() + "€");
         }
 
-        sc.close();
+       
     
       //4. Muestra una factura por id junto con todas sus líneas de factura.
 
-    	
-
+facturaDAO.factura4();
     	// 5. Muestra todos los clientes y selecciona uno por id y muestra sus datos,
 
     	// sus mascotas y sus facturas asociadas.
@@ -121,23 +105,22 @@ public class Main {
      
 
     System.out.println("========= PREGUNTA 7 =========");
+    Mascota mascota = new Mascota();
 
     System.out.println("Nombre mascota:");
-    String nombre = sc.nextLine();
+    mascota.setNombre( "perla");
 
     System.out.println("Especie:");
     String especie = sc.nextLine();
 
-    System.out.println("Fecha nacimiento (yyyy-mm-dd):");
-    LocalDate fecha = LocalDate.parse(sc.nextLine());
+    System.out.println("Fecha nacimiento: ");
+    LocalDate fecha = LocalDate.of(2023,04,14);
 
     System.out.println("Peso:");
     double peso = Double.parseDouble(sc.nextLine());
 
-    Mascota mascota = new Mascota();
 
     mascota.setId_cliente(2);
-    mascota.setNombre(nombre);
     mascota.setEspecie(especie);
     mascota.setFechaNacimiento(fecha);
     mascota.setPeso(peso);
@@ -148,7 +131,7 @@ public class Main {
 
     } else {
 
-        System.out.println("Error insertando mascota");
+        System.out.println("Error");
     }
 
    
@@ -206,7 +189,7 @@ public class Main {
 
     System.out.println("========= PREGUNTA 9 =========");
 
-    List<Tratamiento> listaTratamientos = tratamientoDAO.obtenerTodos();
+    List<Tratamiento> listaTratamientos = TratamientoDAO.obtenerTodos();
 
     int i = 1;
 
@@ -221,7 +204,7 @@ public class Main {
 
     int id = Integer.parseInt(sc.nextLine());
 
-    Tratamiento tratamiento = tratamientoDAO.obtenerPorId(id);
+    Tratamiento tratamiento = TratamientoDAO.obtenerPorId(id);
 
     if (tratamiento != null) {
 
@@ -337,67 +320,9 @@ public class Main {
 
 	
 
-=======
-		
-		// 2. Muestra todos los clientes, selecciona un id y muestras sus mascotas.
-		
-		// 3. Muestra todas las mascotas y selecciona un id y muestra el
-		// historial completo de esa mascota.
-		
-		//4. Muestra una factura por id junto con todas sus líneas de factura.
-			
-		// 5. Muestra todos los clientes y selecciona uno por id y muestra sus datos,
-		// sus mascotas y sus facturas asociadas.
-		
-		// 6. Añade un veterinario: 12345678Z Pepe Carrera, COL-1005
-			Veterinario v = new Veterinario("123456789Z", "Pepe Carrera", "COL-1005");
-			veterinarioDAO.insertar(v);
-			
-		// 7. Añadir nueva mascota: Añade una mascota al cliente id=2,
-		// pide los datos por teclado.
-			
-		// 8. Tratar mascota: Muestra todas las mascotas, seleccionar una por id.
-		// Muestra los tratamientos disponibles y añade tratamientos seleccionando el id en el historial, hasta introducir 0 y después crea
-		// una factura con esas líneas. Muestra la factura con todos sus datos.
-		
-		// 9. Muestra todos los tratamientos disponibles, selecciona uno
-		// para ver su precio y cuántas veces aparece en el historial.
-		
-		// 10. Muestra las facturas, pide un número de mes y muestra las facturas
-		// de ese mes y el total facturado.
-		
-		// 11. Muestra los veterinarios y seleccionando un id muestra
-		// las facturas que ha emitido.
-				//System.out.println(veterinarioDAO.obtenerTodos());
-		// 12. Muestras las mascotas y actualiza su peso.
-		
-		// 13. Muestra las mascotas, selecciona una por id y elimínala
-		// si no tiene facturas asociadas.
-		
-		// 14. Guarda los veterinarios en el fichero “veterinarios.dat”.
-		// Lee ese fichero en una lista y muestra los datos de los veterinarios.
-		
-		// 15. Genera un resumen mensual por veterinario: pide un número de mes
-		// y muestra cada veterinario con el número de tratamientos realizados,
-		// el número de facturas emitidas y el importe total facturado ese mes
-		
-		// 16. Duplica una factura. Pide un id de factura, copia su cabecera,
-		// copia todas sus líneas de factura en una nueva factura con la fecha
-		// actual y muestra la nueva factura generada
-		
-		// 17. Elimina un tratamiento del historial y rehaz una factura. Selecciona
-		// una mascota, muestra su historial de una fecha concreta, elimina uno de
-		// los tratamientos de ese día y actualiza la factura asociada
-		// recalculando sus líneas, subtotal, IVA y total*/
-		
-	}
->>>>>>> branch 'main' of https://github.com/Xoth-manX/AdrianOthmanLauraReto3ev.git
 }
-<<<<<<< HEAD
 
 
 
 
 
-=======
->>>>>>> branch 'main' of https://github.com/Xoth-manX/AdrianOthmanLauraReto3ev.git
