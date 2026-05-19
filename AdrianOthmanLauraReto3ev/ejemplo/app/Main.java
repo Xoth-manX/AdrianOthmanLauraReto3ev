@@ -14,8 +14,10 @@ import ejemplo.dao.TratamientoDAO;
 import ejemplo.dao.VeterinarioDAO;
 import ejemplo.modelo.Historial;
 import ejemplo.modelo.Mascota;
+import ejemplo.modelo.S1;
 import ejemplo.modelo.Tratamiento;
 import ejemplo.modelo.Veterinario;
+import sun.tools.serialver.resources.serialver;
 
 
 
@@ -34,6 +36,8 @@ public class Main {
         MascotaDAO mascotaDAO = new MascotaDAO();
         HistorialDAO historialDAO = new HistorialDAO();
         TratamientoDAO tratamientoDAO = new TratamientoDAO();
+        VeterinarioDAO veterinarioDAO = new VeterinarioDAO();
+        S1 serial = new S1();
 
    //2. Muestra todos los clientes, selecciona un id y muestras sus mascotas.
 
@@ -100,7 +104,8 @@ facturaDAO.factura4();
     	
 
     	// 6. Añade un veterinario: 12345678Z Pepe Carrera, COL-1005
-
+				Veterinario v = new Veterinario("123456789Z", "Pepe Carrera", "COL-1005");
+				veterinarioDAO.insertar(v);
      // 7. Añadir mascota al cliente id=2
      
 
@@ -292,7 +297,7 @@ facturaDAO.factura4();
 
 	// Lee ese fichero en una lista y muestra los datos de los veterinarios.
 
-	serial.guardar(veterinarioDAO.obtenerTodos());
+	serial
 	for (Veterinario veterinario : serial.leer()) {
 		System.out.println(veterinario);
 	}
@@ -324,7 +329,7 @@ facturaDAO.factura4();
 	
 
 }
-
+}
 
 
 
