@@ -118,11 +118,11 @@ public class LineaFactura {
 	public String toString() {
 		return "LineaFactura [id_linea_factura=" + id_linea_factura + ", id_factura=" + id_factura + ", id_tratamiento="
 				+ id_tratamiento + ", fecha=" + fecha + ", cantidad=" + cantidad + ", precio_tratamiento="
-				+ precio_tratamiento + ", importe=" + importe + ", toString()=" + super.toString() + "]";
+				+ precio_tratamiento + ", importe=" + importe + "]";
 	}
 
-	
-	
+
+
 	
 
 	

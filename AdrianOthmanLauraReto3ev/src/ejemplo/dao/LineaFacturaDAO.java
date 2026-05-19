@@ -83,10 +83,11 @@ public class LineaFacturaDAO implements GenericDAO<LineaFactura> {
 
 			return ps.executeUpdate() > 0;
 		} catch (SQLException e) {
-			System.err.println("Error al actualizar Linea de Factura: " + e.getMessage());
+			System.err.println("Error al actualizar Linea de Facturas: " + e.getMessage());
 			return false;
 		}
 	}
+	
 
 	@Override
 	public boolean eliminar(int id) {
