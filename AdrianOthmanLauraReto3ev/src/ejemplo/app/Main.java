@@ -1,5 +1,6 @@
 package ejemplo.app;
 
+import ejemplo.dao.FacturaDAO;
 import ejemplo.dao.VeterinarioDAO;
 import ejemplo.modelo.Veterinario;
 
@@ -7,6 +8,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		VeterinarioDAO veterinarioDAO = new VeterinarioDAO();
+		FacturaDAO facturaDAO = new FacturaDAO();
 		// 1. Muestra los tratamientos que ha realizado el veterinario id=2
 		
 		// 2. Muestra todos los clientes, selecciona un id y muestras sus mascotas.
@@ -15,7 +17,7 @@ public class Main {
 		// historial completo de esa mascota.
 		
 		//4. Muestra una factura por id junto con todas sus líneas de factura.
-		
+			facturaDAO.fa;
 		// 5. Muestra todos los clientes y selecciona uno por id y muestra sus datos,
 		// sus mascotas y sus facturas asociadas.
 		
