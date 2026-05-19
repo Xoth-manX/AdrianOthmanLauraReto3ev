@@ -20,7 +20,7 @@ public class Main {
 		// sus mascotas y sus facturas asociadas.
 		
 		// 6. Añade un veterinario: 12345678Z Pepe Carrera, COL-1005
-			Veterinario v = new Veterinario("12345678Z", "Pepe Carrera", "COL-1005");
+			Veterinario v = new Veterinario("123456789Z", "Pepe Carrera", "COL-1005");
 			veterinarioDAO.insertar(v);
 			
 		// 7. Añadir nueva mascota: Añade una mascota al cliente id=2,
@@ -38,7 +38,7 @@ public class Main {
 		
 		// 11. Muestra los veterinarios y seleccionando un id muestra
 		// las facturas que ha emitido.
-		
+				//System.out.println(veterinarioDAO.obtenerTodos());
 		// 12. Muestras las mascotas y actualiza su peso.
 		
 		// 13. Muestra las mascotas, selecciona una por id y elimínala
