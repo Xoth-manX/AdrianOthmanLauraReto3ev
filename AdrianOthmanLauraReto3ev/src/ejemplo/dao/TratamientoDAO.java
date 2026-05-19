@@ -4,59 +4,110 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import ejemplo.modelo.Tratamiento;
 import ejemplo.util.ConexionBD;
 
-public class TratamientoDAO implements GenericDAO<Tratamiento>{
+public class TratamientoDAO implements GenericDAO<Tratamiento> {
 
-	@Override
-	public boolean insertar(Tratamiento objeto) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Override
+    public boolean insertar(Tratamiento objeto) {
+        return false;
+    }
 
-	@Override
-	public List<Tratamiento> obtenerTodos() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public  List<Tratamiento> obtenerTodos() {
 
-	@Override
-	public Tratamiento obtenerPorId(int id) {
-		String sql = """
-				select a.nombre,a.precio from tratamientos a inner join historial b on
-				 a.id_tratamiento=b.id_tratamiento join veterinarios c on b.id_veterinario=c.id_veterinario where c.id_veterinario=?;
+        String sql = "SELECT * FROM tratamientos";
 
-				""";
-	    try (Connection con = ConexionBD.getConnection();
-	            PreparedStatement ps = con.prepareStatement(sql)) {
+        List<Tratamiento> lista = new ArrayList<>();
 
-	           ps.setString(1, "id_veterinario");
-	          
-	           ResultSet rs = ps.executeQuery();
-	           if (rs.next()) {
-	             
-          return new Tratamiento(rs.getString("a.nombre"), rs.getDouble("a.precio")); 
-	               
-	           }
-	       } catch (SQLException e) {
-	           System.out.println("Error al obtener municipio por id: " + e.getMessage());
-	       }
-	       return null;
-	   }
+        try (Connection con = ConexionBD.getConnection();
+                PreparedStatement ps = con.prepareStatement(sql)) {
 
-	@Override
-	public boolean actualizar(Tratamiento objeto) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+            ResultSet rs = ps.executeQuery();
 
-	@Override
-	public boolean eliminar(int id) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+            while (rs.next()) {
 
+                Tratamiento t = new Tratamiento();
+
+                t.setNombre(rs.getString("nombre"));
+                t.setPrecio(rs.getDouble("precio"));
+
+                lista.add(t);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error tratamientos: " + e.getMessage());
+        }
+
+        return lista;
+    }
+
+    @Override
+    public Tratamiento obtenerPorId(int id) {
+
+        String sql = "SELECT * FROM tratamientos WHERE id_tratamiento=?";
+
+        try (Connection con = ConexionBD.getConnection();
+                PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+
+                Tratamiento t = new Tratamiento();
+
+                t.setNombre(rs.getString("nombre"));
+                t.setPrecio(rs.getDouble("precio"));
+
+                return t;
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error tratamiento: " + e.getMessage());
+        }
+
+        return null;
+    }
+
+    @Override
+    public boolean actualizar(Tratamiento objeto) {
+        return false;
+    }
+
+    @Override
+    public boolean eliminar(int id) {
+        return false;
+    }
+
+    public int contarTratamientosHistorial(int idTratamiento) {
+
+        String sql = """
+                SELECT COUNT(*) total
+                FROM historial
+                WHERE id_tratamiento=?
+                """;
+
+        try (Connection con = ConexionBD.getConnection();
+                PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, idTratamiento);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error contar tratamientos: " + e.getMessage());
+        }
+
+        return 0;
+    }
 }
